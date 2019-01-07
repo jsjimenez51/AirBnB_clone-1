@@ -3,6 +3,8 @@
 import uuid
 import models
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, create_engine, datetime
+from sqlalchmey.ext.declaratvie import declarative_base
 
 Base = declarative_base()
 
@@ -61,7 +63,12 @@ class BaseModel:
             returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
+        if "_sa_instance_state" in my_dict.keys()
+            my_dict.pop("_sa_instance_state")
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
         return my_dict
+
+    def delete(self):
+            FileStorage.delete(self)
