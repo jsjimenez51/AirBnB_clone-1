@@ -11,6 +11,10 @@ class BaseModel:
     for other classes
     """
 
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+    updates_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
@@ -29,7 +33,7 @@ class BaseModel:
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.utcnow()
+            self.created_at = self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         """returns a string
