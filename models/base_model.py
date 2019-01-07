@@ -71,4 +71,4 @@ class BaseModel:
         return my_dict
 
     def delete(self):
-            FileStorage.delete(self)
+            models.storage.delete(self)
