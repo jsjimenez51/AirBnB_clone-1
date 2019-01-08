@@ -67,13 +67,13 @@ class TestConsole(unittest.TestCase):
             self.assertEqual('', f.getvalue())
 
     def test_quit(self):
-        """test quit command inpout"""
+        """test quit command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("quit")
             self.assertEqual('', f.getvalue())
 
     def test_create(self):
-        """Test create command inpout"""
+        """Test create command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("create")
             self.assertEqual(
@@ -89,8 +89,9 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
 
+
     def test_show(self):
-        """Test show command inpout"""
+        """Test show command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("show")
             self.assertEqual(
@@ -109,7 +110,7 @@ class TestConsole(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_destroy(self):
-        """Test destroy command inpout"""
+        """Test destroy command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("destroy")
             self.assertEqual(
@@ -128,7 +129,7 @@ class TestConsole(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_all(self):
-        """Test all command inpout"""
+        """Test all command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("all asdfsdfsd")
             self.assertEqual("** class doesn't exist **\n", f.getvalue())
@@ -137,7 +138,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("[]\n", f.getvalue())
 
     def test_update(self):
-        """Test update command inpout"""
+        """Test update command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("update")
             self.assertEqual(
@@ -168,7 +169,7 @@ class TestConsole(unittest.TestCase):
                 "** value missing **\n", f.getvalue())
 
     def test_z_all(self):
-        """Test alternate all command inpout"""
+        """Test alternate all command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("asdfsdfsd.all()")
             self.assertEqual(
@@ -178,7 +179,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("[]\n", f.getvalue())
 
     def test_z_count(self):
-        """Test count command inpout"""
+        """Test count command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("asdfsdfsd.count()")
             self.assertEqual(
@@ -188,7 +189,7 @@ class TestConsole(unittest.TestCase):
             self.assertEqual("0\n", f.getvalue())
 
     def test_z_show(self):
-        """Test alternate show command inpout"""
+        """Test alternate show command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("safdsa.show()")
             self.assertEqual(
@@ -199,7 +200,7 @@ class TestConsole(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_destroy(self):
-        """Test alternate destroy command inpout"""
+        """Test alternate destroy command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("Galaxy.destroy()")
             self.assertEqual(
@@ -210,7 +211,7 @@ class TestConsole(unittest.TestCase):
                 "** no instance found **\n", f.getvalue())
 
     def test_update(self):
-        """Test alternate destroy command inpout"""
+        """Test alternate destroy command input"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("sldkfjsl.update()")
             self.assertEqual(
