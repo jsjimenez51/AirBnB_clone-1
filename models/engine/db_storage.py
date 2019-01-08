@@ -34,7 +34,7 @@ class DBStorage:
         host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
 
-        self.__engine = create_engine('mysl+mysqldb://{}:{}@{}/{}'.format(user,\
+        self.__engine = create_engine('mysl+mysqldb://{}:{}@{}/{}'.format(user,
                                       pwd, host, db), pool_pre_ping=True)
 
         if getenv('HBNB_MYSQL_ENV') == 'test':
@@ -82,7 +82,7 @@ class DBStorage:
         creates a new session and loads object from database
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,\
-                                       expire_on_commit=False))
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Sess = scoped_session(session_factory)
         self.__session = Sess()
