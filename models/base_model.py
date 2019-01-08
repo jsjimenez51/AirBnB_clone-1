@@ -3,8 +3,8 @@
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, create_engine, datetime
-from sqlalchmey.ext.declaratvie import declarative_base
+from sqlalchemy import Column, Integer, String, create_engine, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
@@ -35,7 +35,7 @@ class BaseModel:
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.datetime.now()
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """returns a string
@@ -58,12 +58,12 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """creates dictionary of the class  and returns
+        """creates dictionary of the class and  returns
         Return:
             returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
-        if "_sa_instance_state" in my_dict.keys()
+        if "_sa_instance_state" in my_dict.keys():
             my_dict.pop("_sa_instance_state")
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
