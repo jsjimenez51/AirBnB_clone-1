@@ -5,7 +5,8 @@ Module defines  DB storage
 
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
+from models.base_model import Base
 
 class DBStorage:
     """
@@ -30,3 +31,50 @@ class DBStorage:
 
         if getenv('HBNB_MYSQL_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """
+        Returns a dictionary of all classes requested
+        """
+        all_dicts = {}
+        if cls is not None:
+            objects = self.__session.query(eval(cls)).all()
+            for obj in objects:
+                key = value.__class__.__name__ + "." + obj.id
+                all_dicts[key] = obj
+            return all_dicts
+        else:
+            objects = self.__session.query().all()
+            for obj in objects:
+                key = value.__class__.__name__ + "." + obj.id
+                all_dicts[key] = obj
+            return all_dicts
+
+    def new(self, obj):
+        """
+        creates a new object for current session
+        """
+        self.__session.add(obj)
+
+    def save(self):
+        """
+        saves object to database
+        """
+        self.__session.commit()
+
+    def delete(self, obj=None):
+        """
+        deletes object from database
+        """
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """
+        creates a new session and loads object from database
+        """
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine,\
+                                       expire_on_commit=False))
+        Sess = scoped_session(session_factory)
+        self.__session = Sess()
