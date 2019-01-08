@@ -53,10 +53,10 @@ class HBNBCommand(cmd.Cmd):
                     if pvalue.startswith("\""):
                         pvalue = pvalue.strip("\"")
                         pvalue = pvalue.replace("_", " ")
-                    elif "." in pvalue:
-                        pvalue = float(pvalue)
                     elif pvalue.isnumeric():
                         pvalue = int(pvalue)
+                    elif "." in pvalue:
+                        pvalue = float(pvalue)
                     else:
                         continue
                     setattr(obj, pname, pvalue)
