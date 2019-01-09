@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
+
 class Place(BaseModel, Base):
     """This is the class for Place
     Attributes:
@@ -32,13 +33,15 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-    #for DBStorage
-    reviews = relationship("Review", cascade="all, delete-orphan", backref="place")
+    # for DBStorage
+    reviews = relationship("Review", cascade="all, delete-orphan",
+                           backref="place")
 
-    #For FileStorage
+    # For FileStorage
     @property
     def reviews(self):
-        """Returns the list of Review instances with place_id equal to the current Place.id"""
+        """Returns the list of Review instances with place_id equal to the
+        current Place.id"""
         ls = []
         for value in storage.all("Review").values():
             if value.place_id == self.id:

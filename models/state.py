@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from models.city import City
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
@@ -14,13 +15,15 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
 
-    #for DBStorage
-    cities = relationship("City", cascade="all, delete-orphan", backref="state")
+    # for DBStorage
+    cities = relationship("City", cascade="all, delete-orphan",
+                          backref="state")
 
-    #for FileStorage
+    # for FileStorage
     @property
     def cities(self):
-        """"Returns the list of City instances with state_id equal to the current State.id"""
+        """"Returns the list of City instances with state_id equal to the
+        current State.id"""
         ls = []
         for value in storage.all("City").values():
             if value.state_id == self.id:
