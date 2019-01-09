@@ -35,7 +35,8 @@ class DBStorage:
         db = getenv('HBNB_MYSQL_DB')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(user, pwd, host, db), pool_pre_ping=True)
+                                      format(user, pwd, host, db),
+                                      pool_pre_ping=True)
 
         if getenv('HBNB_MYSQL_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -46,16 +47,20 @@ class DBStorage:
         """
         all_dicts = {}
         if cls is not None:
-            objects = self.__session.query(eval(cls)).all()
+            objects = self.__session.query(models.classes(cls)).all()
             for obj in objects:
                 key = value.__class__.__name__ + "." + obj.id
                 all_dicts[key] = obj
             return all_dicts
         else:
-            objects = self.__session.query().all()
-            for obj in objects:
-                key = value.__class__.__name__ + "." + obj.id
-                all_dicts[key] = obj
+            # Checks class for BaseModel as an excemption otherwise
+            # Checks all classes
+            for key, value in models.classes.items():
+                if key != "BaseModel":
+                    objects = self.__session.query(value).all()
+                    for obj in objects:
+                        table = value.__class__.__name__ + "." + obj.id
+                        all_dicts[table] = obj
             return all_dicts
 
     def new(self, obj):
@@ -82,7 +87,7 @@ class DBStorage:
         creates a new session and loads object from database
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,\
+        session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Sess = scoped_session(session_factory)
         self.__session = Sess()
