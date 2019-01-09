@@ -4,7 +4,7 @@ Module defines  DB storage
 """
 
 from os import getenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 import models
 from models.base_model import Base, BaseModel
@@ -34,8 +34,8 @@ class DBStorage:
         host = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
 
-        self.__engine = create_engine('mysl+mysqldb://{}:{}@{}/{}'.format(user,
-                                      pwd, host, db), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+                                      format(user, pwd, host, db), pool_pre_ping=True)
 
         if getenv('HBNB_MYSQL_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
