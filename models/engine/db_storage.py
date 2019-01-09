@@ -47,9 +47,9 @@ class DBStorage:
         """
         all_dicts = {}
         if cls is not None:
-            objects = self.__session.query(models.classes(cls)).all()
+            objects = self.__session.query(models.classes[cls]).all()
             for obj in objects:
-                key = value.__class__.__name__ + "." + obj.id
+                key = obj.__class__.__name__ + "." + obj.id
                 all_dicts[key] = obj
             return all_dicts
         else:
@@ -59,7 +59,7 @@ class DBStorage:
                 if key != "BaseModel":
                     objects = self.__session.query(value).all()
                     for obj in objects:
-                        table = value.__class__.__name__ + "." + obj.id
+                        table = obj.__class__.__name__ + "." + obj.id
                         all_dicts[table] = obj
             return all_dicts
 
