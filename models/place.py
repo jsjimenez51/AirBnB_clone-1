@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
-
+from models.amenity import Amenity
+from models.review import Review
 
 place_amenity = Table('place_amenity', Base.metadata,
-                      Column("place_id", String(60), ForeignKey(places.id),
-                      primary_key=True
-                      nullable=False),
+                      Column("place_id", String(60), ForeignKey("places.id"),
+                      primary_key=True, nullable=False),
                       Column("amenity_id", String(60),
-                      ForeignKey(amenities.id), primary_key=True,
+                      ForeignKey("amenities.id"), primary_key=True,
                       nullable=False))
 
 class Place(BaseModel, Base):
@@ -44,6 +44,7 @@ class Place(BaseModel, Base):
     # for DBStorage
     reviews = relationship("Review", cascade="all, delete-orphan",
                            backref="place")
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
 
     # For FileStorage
     @property
@@ -56,3 +57,15 @@ class Place(BaseModel, Base):
                 ls.append(value)
                 # Check if places setting does not take
         return ls
+
+    @property
+    def amenities(self):
+        """Returns the list of Amenity instances based on the attribute
+        amenity_ids that contains all Amenity.id linked to the Place"""
+        return self.amenity_ids
+
+    @amenities.setter
+    def amenities(self, obj):
+        """Handles adding an Amenity.id to the attribute amenity_ids"""
+        if isinstance(obj, Amenity):
+            type(self).amenity_ids.append(obj.id)
