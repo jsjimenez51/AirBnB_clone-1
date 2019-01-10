@@ -47,31 +47,33 @@ class Place(BaseModel, Base):
                            backref="place")
     amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
 
-    # For FileStorage
-    @property
-    def reviews(self):
-        """Returns the list of Review instances with place_id equal to the
-        current Place.id"""
-        ls = []
-        for value in storage.all("Review").values():
-            if value.place_id == self.id:
-                ls.append(value)
-        return ls
 
-    @property
-    def amenities(self):
-        """Returns the list of Amenity instances based on the attribute
-        amenity_ids that contains all Amenity.id linked to the Place"""
-        ls = []
-        bagodicts = models.storage.all("Amenity")
-        for item in bagodicts.values():
-            if item.id in self.amenity_ids:
-                ls.append(item)
-        return ls
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        # For FileStorage
+        @property
+        def reviews(self):
+            """Returns the list of Review instances with place_id equal to the
+            current Place.id"""
+            ls = []
+            for value in storage.all("Review").values():
+                if value.place_id == self.id:
+                    ls.append(value)
+            return ls
+
+        @property
+        def amenities(self):
+            """Returns the list of Amenity instances based on the attribute
+            amenity_ids that contains all Amenity.id linked to the Place"""
+            ls = []
+            bagodicts = models.storage.all("Amenity")
+            for item in bagodicts.values():
+                if item.id in self.amenity_ids:
+                    ls.append(item)
+            return ls
 
 
-    @amenities.setter
-    def amenities(self, obj):
-        """Handles adding an Amenity.id to the attribute amenity_ids"""
-        if obj is not None and isinstance(obj, Amenity):
-            type(self).amenity_ids.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj):
+            """Handles adding an Amenity.id to the attribute amenity_ids"""
+            if obj is not None and isinstance(obj, Amenity):
+                type(self).amenity_ids.append(obj.id)
