@@ -44,8 +44,6 @@ class Place(BaseModel, Base):
     # for DBStorage
     reviews = relationship("Review", cascade="all, delete-orphan",
                            backref="place")
-    cities = relationship("City")
-    users = relationship("User")
 
     # For FileStorage
     @property
