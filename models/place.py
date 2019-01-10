@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.amenity import Amenity
 from models.review import Review
+import models
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column("place_id", String(60), ForeignKey("places.id"),
@@ -55,14 +56,19 @@ class Place(BaseModel, Base):
         for value in storage.all("Review").values():
             if value.place_id == self.id:
                 ls.append(value)
-                # Check if places setting does not take
         return ls
 
     @property
     def amenities(self):
         """Returns the list of Amenity instances based on the attribute
         amenity_ids that contains all Amenity.id linked to the Place"""
-        return self.amenity_ids
+        ls = []
+        bagodicts = models.storage.all("Amenity")
+        for item in bagodicts.values():
+            if item.id in self.amenity_ids:
+                ls.append(item)
+        return ls
+
 
     @amenities.setter
     def amenities(self, obj):
