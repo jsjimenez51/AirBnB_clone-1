@@ -17,7 +17,7 @@ SETUP_TEST="<html>
  HBNB Deployment Configuration
 </body>
 <html>"
-echo "$SETUP_TEST" | sudo teee /data/web_static/releases/test/index.html
+echo "$SETUP_TEST" | sudo tee /data/web_static/releases/test/index.html
 
 # Creates symbolic link between data/web_static/current and .../web_static/releases/test/
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
