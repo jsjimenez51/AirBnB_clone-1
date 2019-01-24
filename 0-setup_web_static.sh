@@ -25,7 +25,7 @@ sudo ln -sf /data/web_static/releases/test /data/web_static/current
 # Gives ownership of /data/ folder to ubuntu and group
 sudo chown -R ubuntu:ubuntu /data/
 
-# Update Nginx config to serve contect of /data/webstatic/current/ to hbnb_static
+# Update Nginx config to serve content of /data/webstatic/current/ to hbnb_static
 D_Config=https://raw.githubusercontent.com/jsjimenez51/AirBnB_clone_v2/master/default
 D_File=/etc/nginx/sites-available/default
 sudo wget $D_Config -O $D_File
