@@ -22,6 +22,8 @@ def do_pack():
     pack = local("sudo tar -cvzf versions/webstatic_{}.tgz web_static/"
                  .format(time))
 
+    local("sudo chmod 664 versions/webstatic_{}.tgz".format(time))
+
     size = os.stat("versions/webstatic_{}.tgz".format(time)).st_size
 
     if pack.succeeded:
