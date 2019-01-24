@@ -19,12 +19,12 @@ def do_pack():
     if not exists('versions'):
         makedirs('versions')
 
-    pack = local("sudo tar -cvzf versions/webstatic_{}.tgz web_static/"
+    pack = local("sudo tar -cvzf versions/web_static_{}.tgz web_static/"
                  .format(time))
 
-    local("sudo chmod 664 versions/webstatic_{}.tgz".format(time))
+    #local("sudo chmod 664 versions/web_static_{}.tgz".format(time))
 
-    size = os.stat("versions/webstatic_{}.tgz".format(time)).st_size
+    size = os.stat("versions/web_static_{}.tgz".format(time)).st_size
 
     if pack.succeeded:
         print("web_static packed: versions/web_static_{} -> {}Bytes"
