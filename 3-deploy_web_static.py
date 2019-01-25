@@ -17,13 +17,19 @@ def do_pack():
     Packs files for deployment on server
     '''
     time = datetime.now().strftime("%Y%m%d%H%M%S")
+    print("Packing web_static to versions/web_static_{}.tgz".format(time))
 
     if not exists('versions'):
         makedirs('versions')
 
     pack = local("sudo tar -cvzf versions/web_static_{}.tgz web_static/"
                  .format(time))
+
+    size = os.stat("versions/web_static_{}.tgz".format(time)).st_size
+
     if pack.succeeded:
+        print("web_static packed: versions/web_static_{} -> {}Bytes"
+              .format(time, size))
         return "versions/web_static_{}.tgz".format(time)
     else:
         return None
