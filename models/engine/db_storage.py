@@ -15,6 +15,7 @@ from models.amenity import Amenity
 from models.review import Review
 import models
 
+
 class DBStorage:
     """
     Defines DBstorage class
@@ -88,8 +89,7 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False))()
-
+                                                     expire_on_commit=False))()
 
     def close(self):
         """ Calls the remove method on the current session to close it

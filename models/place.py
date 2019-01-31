@@ -10,10 +10,11 @@ from os import getenv
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column("place_id", String(60), ForeignKey("places.id"),
-                      primary_key=True, nullable=False),
+                             primary_key=True, nullable=False),
                       Column("amenity_id", String(60),
-                      ForeignKey("amenities.id"), primary_key=True,
-                      nullable=False))
+                             ForeignKey("amenities.id"), primary_key=True,
+                             nullable=False))
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -46,8 +47,8 @@ class Place(BaseModel, Base):
     # for DBStorage
     reviews = relationship("Review", cascade="all, delete-orphan",
                            backref="place")
-    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
-
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
 
     if getenv('HBNB_TYPE_STORAGE') != 'db':
         # For FileStorage
@@ -71,7 +72,6 @@ class Place(BaseModel, Base):
                 if item.id in self.amenity_ids:
                     ls.append(item)
             return ls
-
 
         @amenities.setter
         def amenities(self, obj):

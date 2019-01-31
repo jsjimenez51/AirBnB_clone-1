@@ -76,7 +76,6 @@ class FileStorage:
 
         self.save()
 
-
     def close(self):
         """closes the file storage and deserializes the JSON file to objects
         """

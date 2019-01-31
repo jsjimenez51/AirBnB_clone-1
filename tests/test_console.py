@@ -89,7 +89,6 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
 
-
     def test_show(self):
         """Test show command input"""
         with patch('sys.stdout', new=StringIO()) as f:

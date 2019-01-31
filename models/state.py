@@ -7,6 +7,7 @@ from models.city import City
 from os import getenv
 from models import storage
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
@@ -21,7 +22,7 @@ class State(BaseModel, Base):
                               backref="state")
 
     else:
-    # for FileStorage
+        # for FileStorage
         name = ""
 
         @property
