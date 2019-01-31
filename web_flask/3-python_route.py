@@ -33,12 +33,13 @@ def c_text(text):
 
 
 @app.route('/python', strict_slashes=False)
-@app.route('/python/(<text>)', strict_slashes=False)
-def python_text(text='is cool'):
+@app.route('/python/<text>', strict_slashes=False)
+def python_text(text="is cool"):
     '''
     Displays python followed by text
     '''
-    return "Python {}".format(text.replace('_', ' '))
+    pytxt = "Python {}".format(text)
+    return pytxt.replace('_', ' ')
 
 
 if __name__ == '__main__':
