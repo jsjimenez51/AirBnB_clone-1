@@ -2,11 +2,10 @@
 """
 Module defines  DB storage
 """
-
+import json
 from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-import models
 from models.base_model import Base, BaseModel
 from models.user import User
 from models.place import Place
@@ -14,7 +13,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
+import models
 
 class DBStorage:
     """
@@ -28,18 +27,19 @@ class DBStorage:
         """
         initializes the db storage engine
         """
-
-        user = getenv('HBNB_MYSQL_USER')
-        pwd = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST')
+        usr = getenv('HBNB_MYSQL_USER')
+        pswd = getenv('HBNB_MYSQL_PWD')
+        hst = getenv('HBNB_MYSQL_HOST')
         db = getenv('HBNB_MYSQL_DB')
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(user, pwd, host, db),
-                                      pool_pre_ping=True)
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".format(
+                usr, pswd, hst, db, pool_pre_ping=True))
+
+        Base.metadata.create_all(self.__engine)
 
         if getenv('HBNB_MYSQL_ENV') == 'test':
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """
@@ -87,7 +87,11 @@ class DBStorage:
         creates a new session and loads object from database
         """
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine,
-                                       expire_on_commit=False)
-        Sess = scoped_session(session_factory)
-        self.__session = Sess()
+        self.__session = scoped_session(sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False))()
+
+
+    def close(self):
+        """ Calls the remove method on the current session to close it
+        """
+        self.__session.close()
