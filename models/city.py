@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.place import Place
 from os import getenv
+import models
 
 
 class City(BaseModel, Base):

@@ -8,6 +8,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+import models
 
 
 class FileStorage:
@@ -29,8 +30,10 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
+            if type(cls) is str:
+                cls = eval(cls)
             for key, value in self.__objects.items():
-                if cls is type(value):
+                if isinstance(value, cls):
                     clsdic[key] = value
             return clsdic
 
@@ -41,25 +44,26 @@ class FileStorage:
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
-            self.__objects[key] = obj
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """serialize the file path to JSON file path
         """
         my_dict = {}
-        for key, value in self.__objects.items():
+        for key, value in FileStorage.__objects.items():
             my_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding="UTF-8") as f:
+        with open(FileStorage.__file_path, mode='w', encoding="UTF-8") as f:
             json.dump(my_dict, f)
 
     def reload(self):
         """serialize the file path to JSON file path
         """
         try:
-            with open(self.__file_path, 'r', encoding="UTF-8") as f:
+            with open(FileStorage.__file_path, mode='r',
+                      encoding="UTF-8") as f:
                 for key, value in (json.load(f)).items():
                     value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
+                    FileStorage.__objects[key] = value
         except FileNotFoundError:
             pass
 
@@ -67,14 +71,14 @@ class FileStorage:
         """Deletes an object from __objects in FileStorage
         """
         kys = []
-        for key, value in self.__objects.items():
+        for key, value in FileStorage.__objects.items():
             if obj == value:
                 kys.append(key)
 
         for item in kys:
-            self.__objects.pop(item)
+            FileStorage.__objects.pop(item)
 
-        self.save()
+        FileStorage.save()
 
     def close(self):
         """closes the file storage and deserializes the JSON file to objects
