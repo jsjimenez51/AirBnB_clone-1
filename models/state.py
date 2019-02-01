@@ -15,23 +15,24 @@ class State(BaseModel, Base):
         name: input name
     """
     __tablename__ = 'states'
+
+    name = Column(String(128), nullable=False)
+
     # for DB Storage
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", cascade="all, delete-orphan",
+        cities = relationship(models.city, cascade="all, delete-orphan",
                               backref="state")
 
-    else:
-        # for FileStorage
-        name = ""
-
-        @property
-        def cities(self):
-            """"Returns the list of City instances with state_id equal to the
-            current State.id"""
-            ls = []
-            for value in models.storage.all("City").values():
-                if value.state_id == self.id:
-                    ls.append(value)
-                    # Check if cities setting does not take
-            return ls
+    # for FileStorage
+    @property
+    def cities(self):
+        """"
+        Returns the list of City instances with state_id equal to the
+        current State.id
+        """
+        ls = []
+        for value in models.storage.all("City").values():
+            if value.state_id == self.id:
+                ls.append(value)
+                # Check if cities setting does not take
+        return ls
