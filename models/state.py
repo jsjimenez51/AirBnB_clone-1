@@ -24,6 +24,8 @@ class State(BaseModel, Base):
     else:
         name = ""
     # for FileStorage
+
+
     @property
     def cities(self):
         """"
